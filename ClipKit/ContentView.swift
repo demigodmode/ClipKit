@@ -91,8 +91,16 @@ struct ContentView: View {
             Divider().padding(.vertical, 8)
 
             // ----- Ephemeral Section -----
-            Text("Recent (Ephemeral)")
-                .font(.headline)
+            HStack {
+                Text("Recent (Ephemeral)")
+                    .font(.headline)
+                Spacer()
+                Button(action: { clipboardManager.clearEphemeralItems() }) {
+                    Text("Clear")
+                }
+                .buttonStyle(.bordered)
+                .disabled(clipboardManager.ephemeralItems.isEmpty)
+            }
 
             let filteredEphemeral = clipboardManager.ephemeralItems
                 .filter { $0.matchesSearch(searchQuery) }
