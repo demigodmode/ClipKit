@@ -12,8 +12,8 @@ xcuserdata/
 .DS_Store
 *.dSYM
 
-# VSCode (uncomment to ignore)
-# .vscode/
+# VSCode
+.vscode/
 
 # Build artifacts
 *.o
