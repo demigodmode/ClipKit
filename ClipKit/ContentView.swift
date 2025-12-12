@@ -83,13 +83,17 @@ struct ContentView: View {
                 Text("No pinned items match your search/filter.")
                     .foregroundColor(.secondary)
             } else {
+                // Only enable drag-and-drop reordering when viewing in natural order (most recent)
+                // Dragging in sorted views would be confusing since items would jump after re-sorting
+                let allowReorder = sortMode == .recent
                 List {
                     ForEach(sortedPinned, id: \.id) { item in
                         ClipboardItemRow(item: item, pinned: true)
                             .onDrag {
-                                NSItemProvider(object: item.id.uuidString as NSString)
+                                guard allowReorder else { return NSItemProvider() }
+                                return NSItemProvider(object: item.id.uuidString as NSString)
                             }
-                            .onDrop(of: [.text], delegate: PinnedItemDropDelegate(
+                            .onDrop(of: allowReorder ? [.text] : [], delegate: PinnedItemDropDelegate(
                                 item: item,
                                 getItems: { clipboardManager.pinnedItems },
                                 onMove: { from, to in
