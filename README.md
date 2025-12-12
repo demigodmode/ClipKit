@@ -14,12 +14,22 @@ A lightweight clipboard manager for macOS built with SwiftUI.
 
 ## Installation
 
-1. Download `ClipKit.zip` from the [latest release](https://github.com/demigodmode/ClipKit/releases/latest)
-2. Unzip the file
-3. Drag `ClipKit.app` to your Applications folder
-4. Launch ClipKit and grant clipboard access when prompted
+### First Time Install
 
-To update, download the new version and replace the app in Applications.
+1. Go to [Releases](https://github.com/demigodmode/ClipKit/releases/latest)
+2. Under "Assets", click `ClipKit.zip` to download
+3. Open your Downloads folder and double-click `ClipKit.zip` to unzip
+4. Drag `ClipKit.app` into your Applications folder
+5. Double-click to launch
+6. If macOS says "ClipKit can't be opened", go to System Settings > Privacy & Security and click "Open Anyway"
+
+### Updating to a New Version
+
+1. Quit ClipKit if it's running (right-click the dock icon > Quit)
+2. Download the new `ClipKit.zip` from [Releases](https://github.com/demigodmode/ClipKit/releases/latest)
+3. Unzip and drag `ClipKit.app` to Applications
+4. Click "Replace" when prompted
+5. Launch the updated app
 
 ## Building from Source
 
