@@ -82,8 +82,13 @@ struct ContentView: View {
                 Text("No pinned items match your search/filter.")
                     .foregroundColor(.secondary)
             } else {
-                List(sortedPinned, id: \.id) { item in
-                    ClipboardItemRow(item: item, pinned: true)
+                List {
+                    ForEach(sortedPinned, id: \.id) { item in
+                        ClipboardItemRow(item: item, pinned: true)
+                    }
+                    .onMove { source, destination in
+                        clipboardManager.movePinnedItems(from: source, to: destination)
+                    }
                 }
                 .frame(minHeight: 100)
             }

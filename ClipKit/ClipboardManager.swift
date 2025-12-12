@@ -166,22 +166,32 @@ class ClipboardManager: ObservableObject {
             // Read text
             if let copiedString = pasteboard.string(forType: .string) {
                 let content = ClipboardContent.text(copiedString)
-                if ephemeralItems.first?.content != content {
-                    let newItem = ClipboardItem(content: content)
-                    ephemeralItems.insert(newItem, at: 0)
-                    saveEphemeralItems()
-                }
+                addOrMoveToTop(content: content)
             }
             // Read image
             else if let imageData = pasteboard.data(forType: .tiff) {
                 let content = ClipboardContent.image(imageData)
-                if ephemeralItems.first?.content != content {
-                    let newItem = ClipboardItem(content: content)
-                    ephemeralItems.insert(newItem, at: 0)
-                    saveEphemeralItems()
-                }
+                addOrMoveToTop(content: content)
             }
             // ignoring other data types for brevity
+        }
+    }
+
+    // MARK: - Duplicate Detection Helper
+    /// Adds content to ephemeral items, or moves existing duplicate to top
+    private func addOrMoveToTop(content: ClipboardContent) {
+        // Check if this content already exists in ephemeral items
+        if let existingIndex = ephemeralItems.firstIndex(where: { $0.content == content }) {
+            // Move existing item to top with updated timestamp
+            ephemeralItems.remove(at: existingIndex)
+            let updatedItem = ClipboardItem(content: content)
+            ephemeralItems.insert(updatedItem, at: 0)
+            saveEphemeralItems()
+        } else if !pinnedItems.contains(where: { $0.content == content }) {
+            // Only add if not already pinned
+            let newItem = ClipboardItem(content: content)
+            ephemeralItems.insert(newItem, at: 0)
+            saveEphemeralItems()
         }
     }
     
@@ -235,6 +245,12 @@ class ClipboardManager: ObservableObject {
             savePinnedItems()
             saveEphemeralItems()
         }
+    }
+
+    // MARK: - Reorder Pinned Items (Drag-and-Drop)
+    func movePinnedItems(from source: IndexSet, to destination: Int) {
+        pinnedItems.move(fromOffsets: source, toOffset: destination)
+        savePinnedItems()
     }
 
     // MARK: - Clear Ephemeral Items
