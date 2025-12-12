@@ -82,4 +82,4 @@ Data is persisted as JSON files in `~/Library/Application Support/`.
 
 ## License
 
-MIT
+GPL-3.0
