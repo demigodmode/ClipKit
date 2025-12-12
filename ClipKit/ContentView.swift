@@ -91,7 +91,7 @@ struct ContentView: View {
                             }
                             .onDrop(of: [.text], delegate: PinnedItemDropDelegate(
                                 item: item,
-                                items: clipboardManager.pinnedItems,
+                                getItems: { clipboardManager.pinnedItems },
                                 onMove: { from, to in
                                     clipboardManager.movePinnedItems(from: from, to: to)
                                 }
@@ -298,7 +298,7 @@ extension Date {
 // MARK: - Drag and Drop Delegate for Pinned Items
 struct PinnedItemDropDelegate: DropDelegate {
     let item: ClipboardItem
-    let items: [ClipboardItem]
+    let getItems: () -> [ClipboardItem]  // Closure to get live items, not a snapshot
     let onMove: (IndexSet, Int) -> Void
 
     func performDrop(info: DropInfo) -> Bool {
@@ -313,8 +313,9 @@ struct PinnedItemDropDelegate: DropDelegate {
                   let draggedUUID = UUID(uuidString: uuidString) else { return }
 
             DispatchQueue.main.async {
-                guard let fromIndex = items.firstIndex(where: { $0.id == draggedUUID }),
-                      let toIndex = items.firstIndex(where: { $0.id == item.id }),
+                let currentItems = getItems()  // Get current items at move time
+                guard let fromIndex = currentItems.firstIndex(where: { $0.id == draggedUUID }),
+                      let toIndex = currentItems.firstIndex(where: { $0.id == item.id }),
                       fromIndex != toIndex else { return }
 
                 let destination = fromIndex < toIndex ? toIndex + 1 : toIndex
