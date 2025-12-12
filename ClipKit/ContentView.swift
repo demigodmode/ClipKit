@@ -74,8 +74,8 @@ struct ContentView: View {
                 .font(.headline)
 
             let filteredPinned = clipboardManager.pinnedItems
-                .filter { $0.matchesSearch(searchQuery) }
-                .filter { dataTypeFilterAllows($0, filter: dataTypeFilter) }
+                .filter { $0.content.matchesSearch(searchQuery) }
+                .filter { dataTypeFilterAllows($0.content, filter: dataTypeFilter) }
             let sortedPinned = sortClipboardItems(filteredPinned, by: sortMode)
 
             if sortedPinned.isEmpty {
@@ -103,14 +103,14 @@ struct ContentView: View {
             }
 
             let filteredEphemeral = clipboardManager.ephemeralItems
-                .filter { $0.matchesSearch(searchQuery) }
-                .filter { dataTypeFilterAllows($0, filter: dataTypeFilter) }
+                .filter { $0.content.matchesSearch(searchQuery) }
+                .filter { dataTypeFilterAllows($0.content, filter: dataTypeFilter) }
             let sortedEphemeral = sortClipboardItems(filteredEphemeral, by: sortMode)
 
             // Group ephemeral by data type if toggled
             if groupEphemeralByType {
-                let textItems = sortedEphemeral.filter { if case .text = $0 { return true } else { return false } }
-                let imageItems = sortedEphemeral.filter { if case .image = $0 { return true } else { return false } }
+                let textItems = sortedEphemeral.filter { if case .text = $0.content { return true } else { return false } }
+                let imageItems = sortedEphemeral.filter { if case .image = $0.content { return true } else { return false } }
 
                 if textItems.isEmpty && imageItems.isEmpty {
                     Text("No ephemeral items match your search/filter.")
@@ -154,7 +154,7 @@ struct ContentView: View {
 
 // MARK: - ClipboardItemRow
 struct ClipboardItemRow: View {
-    let item: ClipboardContent
+    let item: ClipboardItem
     let pinned: Bool
 
     @EnvironmentObject var manager: ClipboardManager
@@ -168,21 +168,27 @@ struct ClipboardItemRow: View {
 
     var body: some View {
         HStack {
-            switch item {
-            case .text(let text):
-                Text(text)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-            case .image(let data):
-                if let nsImage = NSImage(data: data) {
-                    Image(nsImage: nsImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 40, height: 40)
-                } else {
-                    Text("Corrupt image")
-                        .foregroundColor(.red)
+            VStack(alignment: .leading, spacing: 2) {
+                switch item.content {
+                case .text(let text):
+                    Text(text)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                case .image(let data):
+                    if let nsImage = NSImage(data: data) {
+                        Image(nsImage: nsImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 40, height: 40)
+                    } else {
+                        Text("Corrupt image")
+                            .foregroundColor(.red)
+                    }
                 }
+
+                Text(item.timestamp.relativeFormatted())
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
 
             Spacer()
@@ -192,9 +198,19 @@ struct ClipboardItemRow: View {
                     Image(systemName: "pin.slash.fill")
                 }
                 .buttonStyle(BorderlessButtonStyle())
+
+                Button(action: { manager.deletePinnedItem(item) }) {
+                    Image(systemName: "trash")
+                }
+                .buttonStyle(BorderlessButtonStyle())
             } else {
                 Button(action: { manager.pinItem(item) }) {
                     Image(systemName: "pin")
+                }
+                .buttonStyle(BorderlessButtonStyle())
+
+                Button(action: { manager.deleteEphemeralItem(item) }) {
+                    Image(systemName: "trash")
                 }
                 .buttonStyle(BorderlessButtonStyle())
             }
@@ -222,13 +238,13 @@ struct ClipboardItemRow: View {
 }
 
 // MARK: - Sorting & Filtering Helpers
-func sortClipboardItems(_ items: [ClipboardContent], by mode: SortMode) -> [ClipboardContent] {
+func sortClipboardItems(_ items: [ClipboardItem], by mode: SortMode) -> [ClipboardItem] {
     switch mode {
     case .recent:
         return items
     case .alphabetical:
         return items.sorted {
-            $0.textRepresentation.localizedCaseInsensitiveCompare($1.textRepresentation) == .orderedAscending
+            $0.content.textRepresentation.localizedCaseInsensitiveCompare($1.content.textRepresentation) == .orderedAscending
         }
     }
 }
@@ -254,5 +270,14 @@ extension ClipboardContent {
         case .image(_):
             return "Image"
         }
+    }
+}
+
+// MARK: - Date Formatting
+extension Date {
+    func relativeFormatted() -> String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .abbreviated
+        return formatter.localizedString(for: self, relativeTo: Date())
     }
 }
