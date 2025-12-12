@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 // MARK: - Sort & Filter Enums
 
@@ -82,8 +83,24 @@ struct ContentView: View {
                 Text("No pinned items match your search/filter.")
                     .foregroundColor(.secondary)
             } else {
-                List(sortedPinned, id: \.id) { item in
-                    ClipboardItemRow(item: item, pinned: true)
+                // Only enable drag-and-drop reordering when viewing in natural order (most recent)
+                // Dragging in sorted views would be confusing since items would jump after re-sorting
+                let allowReorder = sortMode == .recent
+                List {
+                    ForEach(sortedPinned, id: \.id) { item in
+                        ClipboardItemRow(item: item, pinned: true)
+                            .onDrag {
+                                guard allowReorder else { return NSItemProvider() }
+                                return NSItemProvider(object: item.id.uuidString as NSString)
+                            }
+                            .onDrop(of: allowReorder ? [.text] : [], delegate: PinnedItemDropDelegate(
+                                item: item,
+                                getItems: { clipboardManager.pinnedItems },
+                                onMove: { from, to in
+                                    clipboardManager.movePinnedItems(from: from, to: to)
+                                }
+                            ))
+                    }
                 }
                 .frame(minHeight: 100)
             }
@@ -279,5 +296,35 @@ extension Date {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: self, relativeTo: Date())
+    }
+}
+
+// MARK: - Drag and Drop Delegate for Pinned Items
+struct PinnedItemDropDelegate: DropDelegate {
+    let item: ClipboardItem
+    let getItems: () -> [ClipboardItem]  // Closure to get live items, not a snapshot
+    let onMove: (IndexSet, Int) -> Void
+
+    func performDrop(info: DropInfo) -> Bool {
+        return true
+    }
+
+    func dropEntered(info: DropInfo) {
+        guard let draggedID = info.itemProviders(for: [.text]).first else { return }
+
+        draggedID.loadObject(ofClass: NSString.self) { reading, _ in
+            guard let uuidString = reading as? String,
+                  let draggedUUID = UUID(uuidString: uuidString) else { return }
+
+            DispatchQueue.main.async {
+                let currentItems = getItems()  // Get current items at move time
+                guard let fromIndex = currentItems.firstIndex(where: { $0.id == draggedUUID }),
+                      let toIndex = currentItems.firstIndex(where: { $0.id == item.id }),
+                      fromIndex != toIndex else { return }
+
+                let destination = fromIndex < toIndex ? toIndex + 1 : toIndex
+                onMove(IndexSet(integer: fromIndex), destination)
+            }
+        }
     }
 }
