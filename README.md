@@ -12,13 +12,21 @@ A lightweight clipboard manager for macOS built with SwiftUI.
 - **Type Filtering** - Filter by text only, images only, or show all
 - **One-Click Restore** - Click any item to copy it back to the clipboard
 
-## Requirements
+## Installation
 
+1. Download `ClipKit.zip` from the [latest release](https://github.com/demigodmode/ClipKit/releases/latest)
+2. Unzip the file
+3. Drag `ClipKit.app` to your Applications folder
+4. Launch ClipKit and grant clipboard access when prompted
+
+To update, download the new version and replace the app in Applications.
+
+## Building from Source
+
+Requirements:
 - macOS 13.0 or later
 - Xcode 15+ (for building)
 - Swift 5.9+
-
-## Building
 
 ### Using Make
 
