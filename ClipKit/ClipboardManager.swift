@@ -213,7 +213,13 @@ class ClipboardManager: ObservableObject {
             saveEphemeralItems()
         }
     }
-    
+
+    // MARK: - Clear Ephemeral Items
+    func clearEphemeralItems() {
+        ephemeralItems.removeAll()
+        saveEphemeralItems()
+    }
+
     // MARK: - Save / Load Pinned Items
     private func savePinnedItems() {
         do {
