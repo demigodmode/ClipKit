@@ -78,15 +78,32 @@ enum ClipboardContent: Equatable, Identifiable, Codable {
     }
 }
 
+// MARK: - ClipboardItem Wrapper
+struct ClipboardItem: Identifiable, Codable, Equatable {
+    let id: UUID
+    let content: ClipboardContent
+    let timestamp: Date
+
+    init(content: ClipboardContent, timestamp: Date = Date()) {
+        self.id = UUID()
+        self.content = content
+        self.timestamp = timestamp
+    }
+
+    static func == (lhs: ClipboardItem, rhs: ClipboardItem) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 // MARK: - ClipboardManager Class
 class ClipboardManager: ObservableObject {
     // MARK: - Published Properties
-    
+
     // 1) Ephemeral (in-memory) that also saves to ephemeral.json
-    @Published var ephemeralItems: [ClipboardContent] = []
-    
+    @Published var ephemeralItems: [ClipboardItem] = []
+
     // 2) Pinned items (persisted to pinnedItems.json)
-    @Published var pinnedItems: [ClipboardContent] = []
+    @Published var pinnedItems: [ClipboardItem] = []
     
     private let maxPinnedCount = 12  // Allow up to 12 pinned items
     
@@ -145,19 +162,21 @@ class ClipboardManager: ObservableObject {
     @objc private func checkPasteboard() {
         if pasteboard.changeCount != lastChangeCount {
             lastChangeCount = pasteboard.changeCount
-            
+
             // Read text
             if let copiedString = pasteboard.string(forType: .string) {
-                let newItem = ClipboardContent.text(copiedString)
-                if ephemeralItems.first != newItem {
+                let content = ClipboardContent.text(copiedString)
+                if ephemeralItems.first?.content != content {
+                    let newItem = ClipboardItem(content: content)
                     ephemeralItems.insert(newItem, at: 0)
-                    saveEphemeralItems()  // Save after each change
+                    saveEphemeralItems()
                 }
             }
             // Read image
             else if let imageData = pasteboard.data(forType: .tiff) {
-                let newItem = ClipboardContent.image(imageData)
-                if ephemeralItems.first != newItem {
+                let content = ClipboardContent.image(imageData)
+                if ephemeralItems.first?.content != content {
+                    let newItem = ClipboardItem(content: content)
                     ephemeralItems.insert(newItem, at: 0)
                     saveEphemeralItems()
                 }
@@ -167,48 +186,52 @@ class ClipboardManager: ObservableObject {
     }
     
     // MARK: - Re-Copy
-    func restoreToPasteboard(_ content: ClipboardContent) {
+    func restoreToPasteboard(_ item: ClipboardItem) {
         pasteboard.clearContents()
-        
-        switch content {
+
+        switch item.content {
         case .text(let t):
             pasteboard.setString(t, forType: .string)
         case .image(let data):
             pasteboard.setData(data, forType: .tiff)
         }
-        
+
         // Move to top if in ephemeral
-        if let idx = ephemeralItems.firstIndex(of: content) {
+        if let idx = ephemeralItems.firstIndex(of: item) {
             ephemeralItems.remove(at: idx)
-            ephemeralItems.insert(content, at: 0)
+            let updatedItem = ClipboardItem(content: item.content)
+            ephemeralItems.insert(updatedItem, at: 0)
             saveEphemeralItems()
         }
         // pinned logic remains unchanged
     }
     
     // MARK: - Pin / Unpin
-    func pinItem(_ content: ClipboardContent) {
-        if pinnedItems.contains(content) {
+    func pinItem(_ item: ClipboardItem) {
+        // Check if content already pinned (not by id, since item is from ephemeral)
+        if pinnedItems.contains(where: { $0.content == item.content }) {
             return
         }
         if pinnedItems.count >= maxPinnedCount {
             return
         }
         // remove from ephemeral if present
-        if let idx = ephemeralItems.firstIndex(of: content) {
+        if let idx = ephemeralItems.firstIndex(of: item) {
             ephemeralItems.remove(at: idx)
             saveEphemeralItems()
         }
-        
-        pinnedItems.insert(content, at: 0)
+
+        let pinnedItem = ClipboardItem(content: item.content)
+        pinnedItems.insert(pinnedItem, at: 0)
         savePinnedItems()
     }
-    
-    func unpinItem(_ content: ClipboardContent) {
-        if let idx = pinnedItems.firstIndex(of: content) {
+
+    func unpinItem(_ item: ClipboardItem) {
+        if let idx = pinnedItems.firstIndex(of: item) {
             pinnedItems.remove(at: idx)
             // optionally, re-add to ephemeral
-            ephemeralItems.insert(content, at: 0)
+            let ephemeralItem = ClipboardItem(content: item.content)
+            ephemeralItems.insert(ephemeralItem, at: 0)
             savePinnedItems()
             saveEphemeralItems()
         }
@@ -220,6 +243,21 @@ class ClipboardManager: ObservableObject {
         saveEphemeralItems()
     }
 
+    // MARK: - Delete Individual Item
+    func deleteEphemeralItem(_ item: ClipboardItem) {
+        if let idx = ephemeralItems.firstIndex(of: item) {
+            ephemeralItems.remove(at: idx)
+            saveEphemeralItems()
+        }
+    }
+
+    func deletePinnedItem(_ item: ClipboardItem) {
+        if let idx = pinnedItems.firstIndex(of: item) {
+            pinnedItems.remove(at: idx)
+            savePinnedItems()
+        }
+    }
+
     // MARK: - Save / Load Pinned Items
     private func savePinnedItems() {
         do {
@@ -229,15 +267,27 @@ class ClipboardManager: ObservableObject {
             print("Failed to save pinned items:", error)
         }
     }
-    
+
     private func loadPinnedItems() {
-        do {
-            let data = try Data(contentsOf: pinnedFileURL)
-            let decoded = try JSONDecoder().decode([ClipboardContent].self, from: data)
-            pinnedItems = decoded
-        } catch {
+        guard let data = try? Data(contentsOf: pinnedFileURL) else {
             pinnedItems = []
+            return
         }
+
+        // Try new format first
+        if let decoded = try? JSONDecoder().decode([ClipboardItem].self, from: data) {
+            pinnedItems = decoded
+            return
+        }
+
+        // Migration: try old format [ClipboardContent] and convert
+        if let legacyItems = try? JSONDecoder().decode([ClipboardContent].self, from: data) {
+            pinnedItems = legacyItems.map { ClipboardItem(content: $0) }
+            savePinnedItems()  // Save in new format
+            return
+        }
+
+        pinnedItems = []
     }
     
     // MARK: - Save / Load Ephemeral Items
@@ -253,24 +303,46 @@ class ClipboardManager: ObservableObject {
     }
     
     private func loadEphemeralItems() {
-        do {
-            let data = try Data(contentsOf: ephemeralFileURL)
-            let container = try JSONDecoder().decode(EphemeralContainer.self, from: data)
-            // If the saved container has same bootTime, restore ephemeral. Otherwise, discard.
+        guard let data = try? Data(contentsOf: ephemeralFileURL) else {
+            ephemeralItems = []
+            return
+        }
+
+        // Try new format first
+        if let container = try? JSONDecoder().decode(EphemeralContainer.self, from: data) {
             if container.bootTime == currentBootTime {
                 ephemeralItems = container.items
             } else {
                 ephemeralItems = []
                 try? FileManager.default.removeItem(at: ephemeralFileURL)
             }
-        } catch {
-            ephemeralItems = []
+            return
         }
+
+        // Migration: try old format and convert
+        if let legacyContainer = try? JSONDecoder().decode(LegacyEphemeralContainer.self, from: data) {
+            if legacyContainer.bootTime == currentBootTime {
+                ephemeralItems = legacyContainer.items.map { ClipboardItem(content: $0) }
+                saveEphemeralItems()  // Save in new format
+            } else {
+                ephemeralItems = []
+                try? FileManager.default.removeItem(at: ephemeralFileURL)
+            }
+            return
+        }
+
+        ephemeralItems = []
     }
 }
 
 // MARK: - Helper Struct for Ephemeral Storage
 private struct EphemeralContainer: Codable {
+    let bootTime: TimeInterval
+    let items: [ClipboardItem]
+}
+
+// MARK: - Legacy Format (for migration)
+private struct LegacyEphemeralContainer: Codable {
     let bootTime: TimeInterval
     let items: [ClipboardContent]
 }
