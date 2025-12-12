@@ -1,0 +1,546 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		3FA04A782D1B875E00D6182E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3FA04A592D1B875D00D6182E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3FA04A602D1B875D00D6182E;
+			remoteInfo = ClipKit;
+		};
+		3FA04A822D1B875E00D6182E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3FA04A592D1B875D00D6182E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3FA04A602D1B875D00D6182E;
+			remoteInfo = ClipKit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3FA04A612D1B875D00D6182E /* ClipKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClipKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA04A772D1B875E00D6182E /* ClipKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClipKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA04A812D1B875E00D6182E /* ClipKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClipKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		3FA04A632D1B875D00D6182E /* ClipKit */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ClipKit;
+			sourceTree = "<group>";
+		};
+		3FA04A7A2D1B875E00D6182E /* ClipKitTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ClipKitTests;
+			sourceTree = "<group>";
+		};
+		3FA04A842D1B875E00D6182E /* ClipKitUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ClipKitUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3FA04A5E2D1B875D00D6182E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FA04A742D1B875E00D6182E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FA04A7E2D1B875E00D6182E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3FA04A582D1B875D00D6182E = {
+			isa = PBXGroup;
+			children = (
+				3FA04A632D1B875D00D6182E /* ClipKit */,
+				3FA04A7A2D1B875E00D6182E /* ClipKitTests */,
+				3FA04A842D1B875E00D6182E /* ClipKitUITests */,
+				3FA04A622D1B875D00D6182E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3FA04A622D1B875D00D6182E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3FA04A612D1B875D00D6182E /* ClipKit.app */,
+				3FA04A772D1B875E00D6182E /* ClipKitTests.xctest */,
+				3FA04A812D1B875E00D6182E /* ClipKitUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3FA04A602D1B875D00D6182E /* ClipKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3FA04A8B2D1B875E00D6182E /* Build configuration list for PBXNativeTarget "ClipKit" */;
+			buildPhases = (
+				3FA04A5D2D1B875D00D6182E /* Sources */,
+				3FA04A5E2D1B875D00D6182E /* Frameworks */,
+				3FA04A5F2D1B875D00D6182E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3FA04A632D1B875D00D6182E /* ClipKit */,
+			);
+			name = ClipKit;
+			packageProductDependencies = (
+			);
+			productName = ClipKit;
+			productReference = 3FA04A612D1B875D00D6182E /* ClipKit.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3FA04A762D1B875E00D6182E /* ClipKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3FA04A8E2D1B875E00D6182E /* Build configuration list for PBXNativeTarget "ClipKitTests" */;
+			buildPhases = (
+				3FA04A732D1B875E00D6182E /* Sources */,
+				3FA04A742D1B875E00D6182E /* Frameworks */,
+				3FA04A752D1B875E00D6182E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3FA04A792D1B875E00D6182E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3FA04A7A2D1B875E00D6182E /* ClipKitTests */,
+			);
+			name = ClipKitTests;
+			packageProductDependencies = (
+			);
+			productName = ClipKitTests;
+			productReference = 3FA04A772D1B875E00D6182E /* ClipKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3FA04A802D1B875E00D6182E /* ClipKitUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3FA04A912D1B875E00D6182E /* Build configuration list for PBXNativeTarget "ClipKitUITests" */;
+			buildPhases = (
+				3FA04A7D2D1B875E00D6182E /* Sources */,
+				3FA04A7E2D1B875E00D6182E /* Frameworks */,
+				3FA04A7F2D1B875E00D6182E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3FA04A832D1B875E00D6182E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3FA04A842D1B875E00D6182E /* ClipKitUITests */,
+			);
+			name = ClipKitUITests;
+			packageProductDependencies = (
+			);
+			productName = ClipKitUITests;
+			productReference = 3FA04A812D1B875E00D6182E /* ClipKitUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3FA04A592D1B875D00D6182E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					3FA04A602D1B875D00D6182E = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					3FA04A762D1B875E00D6182E = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 3FA04A602D1B875D00D6182E;
+					};
+					3FA04A802D1B875E00D6182E = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 3FA04A602D1B875D00D6182E;
+					};
+				};
+			};
+			buildConfigurationList = 3FA04A5C2D1B875D00D6182E /* Build configuration list for PBXProject "ClipKit" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3FA04A582D1B875D00D6182E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 3FA04A622D1B875D00D6182E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3FA04A602D1B875D00D6182E /* ClipKit */,
+				3FA04A762D1B875E00D6182E /* ClipKitTests */,
+				3FA04A802D1B875E00D6182E /* ClipKitUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3FA04A5F2D1B875D00D6182E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FA04A752D1B875E00D6182E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FA04A7F2D1B875E00D6182E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3FA04A5D2D1B875D00D6182E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FA04A732D1B875E00D6182E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FA04A7D2D1B875E00D6182E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3FA04A792D1B875E00D6182E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3FA04A602D1B875D00D6182E /* ClipKit */;
+			targetProxy = 3FA04A782D1B875E00D6182E /* PBXContainerItemProxy */;
+		};
+		3FA04A832D1B875E00D6182E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3FA04A602D1B875D00D6182E /* ClipKit */;
+			targetProxy = 3FA04A822D1B875E00D6182E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3FA04A892D1B875E00D6182E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		3FA04A8A2D1B875E00D6182E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		3FA04A8C2D1B875E00D6182E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ClipKit/ClipKit.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ClipKit/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demigodmode.ClipKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		3FA04A8D2D1B875E00D6182E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ClipKit/ClipKit.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ClipKit/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demigodmode.ClipKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		3FA04A8F2D1B875E00D6182E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demigodmode.ClipKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClipKit.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ClipKit";
+			};
+			name = Debug;
+		};
+		3FA04A902D1B875E00D6182E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demigodmode.ClipKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClipKit.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ClipKit";
+			};
+			name = Release;
+		};
+		3FA04A922D1B875E00D6182E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demigodmode.ClipKitUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ClipKit;
+			};
+			name = Debug;
+		};
+		3FA04A932D1B875E00D6182E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demigodmode.ClipKitUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ClipKit;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3FA04A5C2D1B875D00D6182E /* Build configuration list for PBXProject "ClipKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FA04A892D1B875E00D6182E /* Debug */,
+				3FA04A8A2D1B875E00D6182E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3FA04A8B2D1B875E00D6182E /* Build configuration list for PBXNativeTarget "ClipKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FA04A8C2D1B875E00D6182E /* Debug */,
+				3FA04A8D2D1B875E00D6182E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3FA04A8E2D1B875E00D6182E /* Build configuration list for PBXNativeTarget "ClipKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FA04A8F2D1B875E00D6182E /* Debug */,
+				3FA04A902D1B875E00D6182E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3FA04A912D1B875E00D6182E /* Build configuration list for PBXNativeTarget "ClipKitUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FA04A922D1B875E00D6182E /* Debug */,
+				3FA04A932D1B875E00D6182E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3FA04A592D1B875D00D6182E /* Project object */;
+}
