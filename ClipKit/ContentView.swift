@@ -85,9 +85,21 @@ struct ContentView: View {
                 List {
                     ForEach(sortedPinned, id: \.id) { item in
                         ClipboardItemRow(item: item, pinned: true)
-                    }
-                    .onMove { source, destination in
-                        clipboardManager.movePinnedItems(from: source, to: destination)
+                            .draggable(item.id.uuidString) {
+                                // Drag preview
+                                ClipboardItemRow(item: item, pinned: true)
+                                    .frame(width: 300)
+                            }
+                            .dropDestination(for: String.self) { droppedIDs, _ in
+                                guard let droppedID = droppedIDs.first,
+                                      let draggedUUID = UUID(uuidString: droppedID),
+                                      let sourceIndex = clipboardManager.pinnedItems.firstIndex(where: { $0.id == draggedUUID }),
+                                      let destIndex = clipboardManager.pinnedItems.firstIndex(where: { $0.id == item.id }) else {
+                                    return false
+                                }
+                                clipboardManager.movePinnedItems(from: IndexSet(integer: sourceIndex), to: destIndex > sourceIndex ? destIndex + 1 : destIndex)
+                                return true
+                            }
                     }
                 }
                 .frame(minHeight: 100)
