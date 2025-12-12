@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 // MARK: - Sort & Filter Enums
 
@@ -85,21 +86,16 @@ struct ContentView: View {
                 List {
                     ForEach(sortedPinned, id: \.id) { item in
                         ClipboardItemRow(item: item, pinned: true)
-                            .draggable(item.id.uuidString) {
-                                // Drag preview
-                                ClipboardItemRow(item: item, pinned: true)
-                                    .frame(width: 300)
+                            .onDrag {
+                                NSItemProvider(object: item.id.uuidString as NSString)
                             }
-                            .dropDestination(for: String.self) { droppedIDs, _ in
-                                guard let droppedID = droppedIDs.first,
-                                      let draggedUUID = UUID(uuidString: droppedID),
-                                      let sourceIndex = clipboardManager.pinnedItems.firstIndex(where: { $0.id == draggedUUID }),
-                                      let destIndex = clipboardManager.pinnedItems.firstIndex(where: { $0.id == item.id }) else {
-                                    return false
+                            .onDrop(of: [.text], delegate: PinnedItemDropDelegate(
+                                item: item,
+                                items: clipboardManager.pinnedItems,
+                                onMove: { from, to in
+                                    clipboardManager.movePinnedItems(from: from, to: to)
                                 }
-                                clipboardManager.movePinnedItems(from: IndexSet(integer: sourceIndex), to: destIndex > sourceIndex ? destIndex + 1 : destIndex)
-                                return true
-                            }
+                            ))
                     }
                 }
                 .frame(minHeight: 100)
@@ -296,5 +292,34 @@ extension Date {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: self, relativeTo: Date())
+    }
+}
+
+// MARK: - Drag and Drop Delegate for Pinned Items
+struct PinnedItemDropDelegate: DropDelegate {
+    let item: ClipboardItem
+    let items: [ClipboardItem]
+    let onMove: (IndexSet, Int) -> Void
+
+    func performDrop(info: DropInfo) -> Bool {
+        return true
+    }
+
+    func dropEntered(info: DropInfo) {
+        guard let draggedID = info.itemProviders(for: [.text]).first else { return }
+
+        draggedID.loadObject(ofClass: NSString.self) { reading, _ in
+            guard let uuidString = reading as? String,
+                  let draggedUUID = UUID(uuidString: uuidString) else { return }
+
+            DispatchQueue.main.async {
+                guard let fromIndex = items.firstIndex(where: { $0.id == draggedUUID }),
+                      let toIndex = items.firstIndex(where: { $0.id == item.id }),
+                      fromIndex != toIndex else { return }
+
+                let destination = fromIndex < toIndex ? toIndex + 1 : toIndex
+                onMove(IndexSet(integer: fromIndex), destination)
+            }
+        }
     }
 }
