@@ -9,12 +9,12 @@ import SwiftUI
 
 @main
 struct ClipKitApp: App {
-    let persistenceController = PersistenceController.shared
-
+    @StateObject private var clipboardManager = ClipboardManager()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(clipboardManager)
         }
     }
 }

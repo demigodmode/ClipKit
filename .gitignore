@@ -1,0 +1,23 @@
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# Xcode
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# macOS
+.DS_Store
+*.dSYM
+
+# VSCode (uncomment to ignore)
+# .vscode/
+
+# Build artifacts
+*.o
+*.swiftmodule
+
+# Local documentation
+local_docs/

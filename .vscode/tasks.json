@@ -1,0 +1,86 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Swift: Build Debug",
+            "type": "shell",
+            "command": "swift",
+            "args": ["build"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$swiftc"],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Swift: Build Release",
+            "type": "shell",
+            "command": "swift",
+            "args": ["build", "-c", "release"],
+            "group": "build",
+            "problemMatcher": ["$swiftc"],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Swift: Run",
+            "type": "shell",
+            "command": "swift",
+            "args": ["run"],
+            "group": "build",
+            "problemMatcher": ["$swiftc"],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            },
+            "dependsOn": ["Swift: Build Debug"]
+        },
+        {
+            "label": "Swift: Test",
+            "type": "shell",
+            "command": "swift",
+            "args": ["test"],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": ["$swiftc"],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Swift: Clean",
+            "type": "shell",
+            "command": "swift",
+            "args": ["package", "clean"],
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        }
+    ]
+}
