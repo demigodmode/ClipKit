@@ -20,8 +20,11 @@ struct SettingsView: View {
                     Label("Limits", systemImage: "slider.horizontal.3")
                 }
 
-            // Shortcuts tab will be added in Phase 3
+            ShortcutsSettingsView()
+                .tabItem {
+                    Label("Shortcuts", systemImage: "keyboard")
+                }
         }
-        .frame(width: 450, height: 300)
+        .frame(width: 500, height: 400)
     }
 }

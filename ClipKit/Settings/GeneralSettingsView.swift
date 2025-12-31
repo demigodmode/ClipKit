@@ -18,6 +18,10 @@ struct GeneralSettingsView: View {
                     .onChange(of: launchAtLogin) { newValue in
                         LaunchAtLoginHelper.setEnabled(newValue)
                     }
+                    .onAppear {
+                        // Sync UI state with actual system state
+                        launchAtLogin = LaunchAtLoginHelper.isEnabled
+                    }
             } header: {
                 Text("Startup")
             }

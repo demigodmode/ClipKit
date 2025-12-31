@@ -12,13 +12,17 @@ struct ClipKitApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var settingsManager: SettingsManager
     @StateObject private var clipboardManager: ClipboardManager
+    @StateObject private var shortcutManager: GlobalShortcutManager
 
     init() {
-        // Create shared settings manager, then clipboard manager with settings
+        // Create shared settings manager, then other managers
         let settings = SettingsManager()
         let clipboard = ClipboardManager(settings: settings)
+        let shortcuts = GlobalShortcutManager(settings: settings)
+
         _settingsManager = StateObject(wrappedValue: settings)
         _clipboardManager = StateObject(wrappedValue: clipboard)
+        _shortcutManager = StateObject(wrappedValue: shortcuts)
 
         // Set reference immediately for quit handling
         AppDelegate.shared = clipboard
@@ -31,6 +35,7 @@ struct ClipKitApp: App {
             ContentView()
                 .environmentObject(clipboardManager)
                 .environmentObject(settingsManager)
+                .environmentObject(shortcutManager)
                 .sheet(isPresented: $showingHelp) {
                     HelpView()
                 }
@@ -46,6 +51,7 @@ struct ClipKitApp: App {
         Settings {
             SettingsView()
                 .environmentObject(settingsManager)
+                .environmentObject(shortcutManager)
         }
     }
 }
