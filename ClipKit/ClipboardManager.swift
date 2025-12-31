@@ -8,6 +8,7 @@
 import SwiftUI
 import AppKit
 import Darwin
+import Combine
 
 // MARK: - ClipboardContent Enum
 enum ClipboardContent: Equatable, Identifiable, Codable {
@@ -104,25 +105,28 @@ class ClipboardManager: ObservableObject {
 
     // 2) Pinned items (persisted to pinnedItems.json)
     @Published var pinnedItems: [ClipboardItem] = []
-    
-    private let maxPinnedCount = 12  // Allow up to 12 pinned items
-    
+
+    // MARK: - Settings
+    private let settings: SettingsManager
+    private var settingsObserver: Any?
+
     // MARK: - File URLs
     private let pinnedFileURL: URL
     private let ephemeralFileURL: URL
-    
+
     // We'll store ephemeral items in ephemeral.json, along with the current bootTime
     // e.g., ephemeralContainer = { bootTime: 1691234567, items: [ClipboardContent...] }
-    
+
     // MARK: - Timer for Pasteboard Polling
     private let pasteboard = NSPasteboard.general
     private var lastChangeCount: Int = 0
     private var timer: Timer?
-    
+
     // We record the current system boot time at launch.
     private let currentBootTime: TimeInterval
-    
-    init() {
+
+    init(settings: SettingsManager) {
+        self.settings = settings
         // 1. Grab current system boot time
         currentBootTime = fetchSystemBootTime() ?? 0
         
@@ -145,17 +149,35 @@ class ClipboardManager: ObservableObject {
         // 3. Load pinned + ephemeral
         loadPinnedItems()
         loadEphemeralItems()
-        
+
         // 4. Start the timer for pasteboard polling
-        timer = Timer.scheduledTimer(timeInterval: 0.5,
+        startPollingTimer()
+
+        // 5. Observe polling interval changes
+        settingsObserver = settings.pollingIntervalDidChange.sink { [weak self] _ in
+            self?.startPollingTimer()
+        }
+    }
+
+    deinit {
+        timer?.invalidate()
+    }
+
+    // MARK: - Polling Timer Management
+    private func startPollingTimer() {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: settings.pollingInterval,
                                      target: self,
                                      selector: #selector(checkPasteboard),
                                      userInfo: nil,
                                      repeats: true)
     }
-    
-    deinit {
-        timer?.invalidate()
+
+    // MARK: - Clear History on Quit
+    func clearHistoryIfNeeded() {
+        if settings.clearHistoryOnQuit {
+            clearEphemeralItems()
+        }
     }
     
     // MARK: - Pasteboard Polling for Ephemeral Copies
@@ -186,12 +208,22 @@ class ClipboardManager: ObservableObject {
             ephemeralItems.remove(at: existingIndex)
             let updatedItem = ClipboardItem(content: content)
             ephemeralItems.insert(updatedItem, at: 0)
+            trimEphemeralItemsIfNeeded()
             saveEphemeralItems()
         } else if !pinnedItems.contains(where: { $0.content == content }) {
             // Only add if not already pinned
             let newItem = ClipboardItem(content: content)
             ephemeralItems.insert(newItem, at: 0)
+            trimEphemeralItemsIfNeeded()
             saveEphemeralItems()
+        }
+    }
+
+    /// Trims ephemeral items to stay within the configured limit
+    private func trimEphemeralItemsIfNeeded() {
+        let maxCount = settings.maxEphemeralCount
+        if ephemeralItems.count > maxCount {
+            ephemeralItems = Array(ephemeralItems.prefix(maxCount))
         }
     }
     
@@ -222,7 +254,7 @@ class ClipboardManager: ObservableObject {
         if pinnedItems.contains(where: { $0.content == item.content }) {
             return
         }
-        if pinnedItems.count >= maxPinnedCount {
+        if pinnedItems.count >= settings.maxPinnedCount {
             return
         }
         // remove from ephemeral if present

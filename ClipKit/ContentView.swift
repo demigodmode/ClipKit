@@ -8,27 +8,23 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-// MARK: - Sort & Filter Enums
-
-enum SortMode: String, CaseIterable {
-    case recent = "Most Recent"
-    case alphabetical = "Alphabetical"
-}
-
-enum DataTypeFilter: String, CaseIterable {
-    case all = "All Types"
-    case textOnly = "Text Only"
-    case imagesOnly = "Images Only"
-}
-
 struct ContentView: View {
     @EnvironmentObject var clipboardManager: ClipboardManager
+    @EnvironmentObject var settingsManager: SettingsManager
 
-    // Local states for user preferences
+    // Search query is local state (not persisted)
     @State private var searchQuery = ""
-    @State private var sortMode: SortMode = .recent
-    @State private var dataTypeFilter: DataTypeFilter = .all
-    @State private var groupEphemeralByType = false
+
+    // Computed properties to convert between enum and stored string
+    private var sortMode: SortMode {
+        get { settingsManager.sortModeEnum }
+        nonmutating set { settingsManager.sortModeEnum = newValue }
+    }
+
+    private var dataTypeFilter: DataTypeFilter {
+        get { settingsManager.dataTypeFilterEnum }
+        nonmutating set { settingsManager.dataTypeFilterEnum = newValue }
+    }
 
     var body: some View {
         // The main pinned + ephemeral UI
@@ -38,23 +34,29 @@ struct ContentView: View {
                 // so the search bar appears on the far right side of the toolbar.
                 ToolbarItemGroup(placement: .automatic) {
                     // Sort mode
-                    Picker("Sort By", selection: $sortMode) {
+                    Picker("Sort By", selection: Binding(
+                        get: { sortMode },
+                        set: { sortMode = $0 }
+                    )) {
                         ForEach(SortMode.allCases, id: \.self) { mode in
-                            Text(mode.rawValue).tag(mode)
+                            Text(mode.displayName).tag(mode)
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
 
                     // Data type filter
-                    Picker("Data Type", selection: $dataTypeFilter) {
+                    Picker("Data Type", selection: Binding(
+                        get: { dataTypeFilter },
+                        set: { dataTypeFilter = $0 }
+                    )) {
                         ForEach(DataTypeFilter.allCases, id: \.self) { filter in
-                            Text(filter.rawValue).tag(filter)
+                            Text(filter.displayName).tag(filter)
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
 
                     // Toggle grouping ephemeral by type
-                    Toggle("Group By Type", isOn: $groupEphemeralByType)
+                    Toggle("Group By Type", isOn: $settingsManager.groupEphemeralByType)
 
                     // Spacer to push the search bar to the right
                     Spacer()
@@ -71,7 +73,7 @@ struct ContentView: View {
     private var content: some View {
         VStack(alignment: .leading) {
             // ----- Pinned Section -----
-            Text("Pinned (Max \(clipboardManager.pinnedItems.count)/\(12))")
+            Text("Pinned (\(clipboardManager.pinnedItems.count)/\(settingsManager.maxPinnedCount))")
                 .font(.headline)
 
             let filteredPinned = clipboardManager.pinnedItems
@@ -125,7 +127,7 @@ struct ContentView: View {
             let sortedEphemeral = sortClipboardItems(filteredEphemeral, by: sortMode)
 
             // Group ephemeral by data type if toggled
-            if groupEphemeralByType {
+            if settingsManager.groupEphemeralByType {
                 let textItems = sortedEphemeral.filter { if case .text = $0.content { return true } else { return false } }
                 let imageItems = sortedEphemeral.filter { if case .image = $0.content { return true } else { return false } }
 
