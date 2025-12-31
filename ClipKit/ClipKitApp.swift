@@ -24,11 +24,23 @@ struct ClipKitApp: App {
         AppDelegate.shared = clipboard
     }
 
+    @State private var showingHelp = false
+
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(clipboardManager)
                 .environmentObject(settingsManager)
+                .sheet(isPresented: $showingHelp) {
+                    HelpView()
+                }
+        }
+        .commands {
+            CommandGroup(replacing: .help) {
+                Button("ClipKit Help") {
+                    showingHelp = true
+                }
+            }
         }
 
         Settings {
