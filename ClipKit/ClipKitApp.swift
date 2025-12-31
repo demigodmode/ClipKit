@@ -10,14 +10,18 @@ import SwiftUI
 @main
 struct ClipKitApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @StateObject private var settingsManager = SettingsManager()
+    @StateObject private var settingsManager: SettingsManager
     @StateObject private var clipboardManager: ClipboardManager
 
     init() {
-        // Create settings manager first, then clipboard manager with settings
+        // Create shared settings manager, then clipboard manager with settings
         let settings = SettingsManager()
+        let clipboard = ClipboardManager(settings: settings)
         _settingsManager = StateObject(wrappedValue: settings)
-        _clipboardManager = StateObject(wrappedValue: ClipboardManager(settings: settings))
+        _clipboardManager = StateObject(wrappedValue: clipboard)
+
+        // Set reference immediately for quit handling
+        AppDelegate.shared = clipboard
     }
 
     var body: some Scene {
@@ -25,10 +29,6 @@ struct ClipKitApp: App {
             ContentView()
                 .environmentObject(clipboardManager)
                 .environmentObject(settingsManager)
-                .onAppear {
-                    // Share references with AppDelegate for quit handling
-                    appDelegate.clipboardManager = clipboardManager
-                }
         }
 
         Settings {
@@ -40,9 +40,10 @@ struct ClipKitApp: App {
 
 // MARK: - App Delegate for handling app lifecycle events
 class AppDelegate: NSObject, NSApplicationDelegate {
-    var clipboardManager: ClipboardManager?
+    static var shared: ClipboardManager?
 
-    func applicationWillTerminate(_ notification: Notification) {
-        clipboardManager?.clearHistoryIfNeeded()
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        AppDelegate.shared?.clearHistoryIfNeeded()
+        return .terminateNow
     }
 }
