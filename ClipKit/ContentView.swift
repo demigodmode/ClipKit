@@ -93,8 +93,7 @@ struct ContentView: View {
                 onReturn: { handleReturnKey() },
                 onDelete: { handleDeleteKey() },
                 onEscape: { handleEscapeKey() },
-                onPin: { handlePinKey() },
-                onFocusSearch: { focusSearchField() }
+                onPin: { handlePinKey() }
             ))
     }
 
@@ -173,29 +172,6 @@ struct ContentView: View {
         }
         // Clear selection since item moved between lists
         selectedItemID = nil
-    }
-
-    private func focusSearchField() {
-        // Find and focus the search text field
-        if let window = NSApp.keyWindow {
-            // Look for NSTextField in the toolbar
-            func findTextField(in view: NSView) -> NSTextField? {
-                if let textField = view as? NSTextField, textField.isEditable {
-                    return textField
-                }
-                for subview in view.subviews {
-                    if let found = findTextField(in: subview) {
-                        return found
-                    }
-                }
-                return nil
-            }
-
-            if let contentView = window.contentView,
-               let textField = findTextField(in: contentView) {
-                window.makeFirstResponder(textField)
-            }
-        }
     }
 
     /// The pinned & ephemeral UI
@@ -472,7 +448,6 @@ struct KeyEventHandler: NSViewRepresentable {
     let onDelete: () -> Void
     let onEscape: () -> Void
     let onPin: () -> Void
-    let onFocusSearch: () -> Void
 
     func makeNSView(context: Context) -> KeyCaptureView {
         let view = KeyCaptureView()
@@ -482,7 +457,6 @@ struct KeyEventHandler: NSViewRepresentable {
         view.onDelete = onDelete
         view.onEscape = onEscape
         view.onPin = onPin
-        view.onFocusSearch = onFocusSearch
         return view
     }
 
@@ -493,7 +467,6 @@ struct KeyEventHandler: NSViewRepresentable {
         nsView.onDelete = onDelete
         nsView.onEscape = onEscape
         nsView.onPin = onPin
-        nsView.onFocusSearch = onFocusSearch
     }
 }
 
@@ -504,7 +477,6 @@ class KeyCaptureView: NSView {
     var onDelete: (() -> Void)?
     var onEscape: (() -> Void)?
     var onPin: (() -> Void)?
-    var onFocusSearch: (() -> Void)?
 
     private var localMonitor: Any?
 
@@ -559,12 +531,6 @@ class KeyCaptureView: NSView {
             case 35: // P key
                 self.onPin?()
                 return nil
-            case 3: // F key (check for Cmd modifier)
-                if event.modifierFlags.contains(.command) {
-                    self.onFocusSearch?()
-                    return nil
-                }
-                return event
             default:
                 return event
             }
