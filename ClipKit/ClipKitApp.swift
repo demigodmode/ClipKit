@@ -30,6 +30,14 @@ struct ClipKitApp: App {
                 .environmentObject(clipboardManager)
                 .environmentObject(settingsManager)
         }
+        .commands {
+            CommandGroup(after: .textEditing) {
+                Button("Focus Search") {
+                    NotificationCenter.default.post(name: .focusSearch, object: nil)
+                }
+                .keyboardShortcut("f", modifiers: .command)
+            }
+        }
 
         Settings {
             SettingsView()
@@ -46,4 +54,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         AppDelegate.shared?.clearHistoryIfNeeded()
         return .terminateNow
     }
+}
+
+// MARK: - Notification Names
+extension Notification.Name {
+    static let focusSearch = Notification.Name("focusSearch")
 }
