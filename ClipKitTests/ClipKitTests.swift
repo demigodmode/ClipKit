@@ -18,6 +18,10 @@ struct ClipKitTests {
 
         let manager = ClipboardManager(settings: settings)
 
+        // Clear any persisted state loaded from disk
+        manager.ephemeralItems.removeAll()
+        manager.pinnedItems.removeAll()
+
         // Fill ephemeral items to max capacity
         for i in 0..<maxCount {
             let item = ClipboardItem(content: .text("ephemeral-\(i)"))
@@ -49,6 +53,10 @@ struct ClipKitTests {
         settings.maxEphemeralCount = 0
 
         let manager = ClipboardManager(settings: settings)
+
+        // Clear any persisted state loaded from disk
+        manager.ephemeralItems.removeAll()
+        manager.pinnedItems.removeAll()
 
         // Add a pinned item
         let pinnedItem = ClipboardItem(content: .text("will-be-dropped"))
