@@ -274,6 +274,7 @@ class ClipboardManager: ObservableObject {
             // optionally, re-add to ephemeral
             let ephemeralItem = ClipboardItem(content: item.content)
             ephemeralItems.insert(ephemeralItem, at: 0)
+            trimEphemeralItemsIfNeeded()
             savePinnedItems()
             saveEphemeralItems()
         }
