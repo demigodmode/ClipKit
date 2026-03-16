@@ -4,8 +4,11 @@
 [![Swift](https://img.shields.io/badge/Swift-5.9-orange)](https://swift.org)
 [![License](https://img.shields.io/badge/License-GPL--3.0-green)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/demigodmode/ClipKit)](https://github.com/demigodmode/ClipKit/releases/latest)
+[![Documentation](https://readthedocs.org/projects/clipkit/badge/?version=latest)](https://clipkit.readthedocs.io/en/latest/)
 
 A lightweight clipboard manager for macOS built with SwiftUI.
+
+**[Documentation](https://clipkit.readthedocs.io)** | **[Download](https://github.com/demigodmode/ClipKit/releases/latest)**
 
 ---
 
