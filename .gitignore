@@ -21,3 +21,6 @@ xcuserdata/
 
 # Local documentation
 local_docs/
+
+# MkDocs
+site/
