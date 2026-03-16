@@ -24,6 +24,18 @@ Contributions to ClipKit are welcome! Here's how to get started.
 
 See [Building from Source](building.md) for build instructions and IDE setup.
 
+## Testing
+
+ClipKit uses Swift's native `Testing` framework (not XCTest). Run the test suite with:
+
+```bash
+make test
+# or
+swift test
+```
+
+When adding new features, include tests that cover the expected behavior. Tests live in `ClipKitTests/`.
+
 ## Guidelines
 
 - **No regressions** — Existing functionality must continue to work

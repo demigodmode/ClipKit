@@ -17,6 +17,10 @@ The global shortcut works from any application. It can be customized in ClipKit'
 |----------|--------|
 | **Up / Down** | Navigate items |
 | **Return** | Copy selected item to clipboard |
-| **Delete** | Remove selected item |
+| **Delete / Forward Delete** | Remove selected item |
 | **P** | Pin or unpin selected item |
 | **Escape** | Clear selection |
+| **Cmd+,** | Open Settings |
+
+!!! tip
+    ClipKit also has a built-in help dialog accessible from the **ClipKit Help** menu item.

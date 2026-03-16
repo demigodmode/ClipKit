@@ -9,6 +9,12 @@ ClipKit's goal is to become the best lightweight, privacy-first clipboard manage
 - **Privacy-first** — Least-privilege, explicit opt-ins
 - **Do less, better** — Ship a focused feature set, polished
 
+## Performance Targets
+
+- UI open latency < 150ms
+- Pasteboard polling overhead < 1% CPU
+- Zero data loss across updates
+
 ## v1.3: Stability & Distribution
 
 *Table stakes for a real clipboard manager.*
@@ -37,6 +43,19 @@ ClipKit's goal is to become the best lightweight, privacy-first clipboard manage
 
 - iCloud sync for pinned items (opt-in, encrypted)
 - Conflict resolution
+
+## Deferred Ideas
+
+These are not planned but may be revisited based on user demand:
+
+| Idea | Why Deferred |
+|------|-------------|
+| SQLite storage | JSON works fine for <1000 items |
+| Snippets/templates | Scope creep — not a text expander |
+| CLI tool | Niche audience |
+| Plugin architecture | Maintenance burden |
+| Encryption at rest | Most users don't need it |
+| More data types (files, etc.) | Text + images covers 99% of use |
 
 ## Feature Requests
 

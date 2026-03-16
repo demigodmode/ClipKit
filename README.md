@@ -26,7 +26,7 @@ A lightweight clipboard manager for macOS built with SwiftUI.
 - **Drag & Drop Reordering** - Reorder pinned items by dragging
 
 ### Settings (v1.2.0)
-- **Configurable Limits** - Adjust max pinned items (1-50), max ephemeral items (10-500), polling interval
+- **Configurable Limits** - Adjust max pinned items (1-50, default 12), max ephemeral items (10-500, default 100), polling interval
 - **Launch at Login** - Keep ClipKit always available in the background
 - **Clear History on Quit** - Privacy option to clear ephemeral items when quitting
 

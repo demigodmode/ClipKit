@@ -64,6 +64,16 @@ SPM builds work for day-to-day development, but have some limitations:
 - Quick iteration and testing
 - CI/CD pipelines
 
+## Running Tests
+
+```bash
+make test
+# or
+swift test
+```
+
+ClipKit uses Swift's native `Testing` framework. Tests are located in `ClipKitTests/`.
+
 ## VSCode Setup
 
 1. Install the [Swift extension](https://marketplace.visualstudio.com/items?itemName=sswg.swift-lang)
